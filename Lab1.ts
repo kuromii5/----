@@ -231,18 +231,32 @@ export class LinkedList {
 
         let curr = this.head
         let temp = list.head
+        let tempCurr = this.head
+        let entry = false
 
-        for (let i = 0; i < this.length; i++) {
+        while(curr) {
             if (curr?.data === temp?.data) {
-                temp = temp?.next
-            } else {
-                temp = list.head
-            }
+                if (temp === list.head) {
+                    entry = true
+                    tempCurr = curr
+                }
 
-            if (!temp) {
+                temp = temp?.next
+
+            } else {
+                if (entry) {
+                    entry = false
+                    curr = tempCurr
+                }
+
+                temp = list.head
+
+            }
+            
+            if(!temp) {
                 return true
             }
-
+            
             curr = curr?.next
         }
 
@@ -265,19 +279,38 @@ export class LinkedList {
     public searchFirstEntry(list: LinkedList): number {
         let curr = this.head
         let temp = list.head
+        let tempCurr = this.head
+        let entry = false
+        let counter = 0, tempCounter = 0
 
-        for (let i = 0; i < this.length; i++) {
-            if (curr!.data === temp!.data) {
+        while(curr) {
+            if (curr?.data === temp?.data) {
+                if (temp === list.head) {
+                    entry = true
+                    tempCurr = curr
+                }
+
                 temp = temp?.next
+                if (temp) tempCounter++
+
             } else {
+                if (entry) {
+                    entry = false
+                    curr = tempCurr
+                    counter -= tempCounter
+                }
+
+                tempCounter = 0
                 temp = list.head
+
             }
 
             if(!temp) {
-                return i - (list.length - 1)
+                return counter - tempCounter
             }
-
+            
             curr = curr?.next
+            counter++
         }
 
         return -1
@@ -285,27 +318,49 @@ export class LinkedList {
 
     // 18) searching last entry of one list in another
     public searchLastEntry(list: LinkedList): number {
-        this.reverse()
-        list.reverse()
+        let mainList = this.copy()
+        let innerList = list.copy()
 
-        let curr = this.head
-        let temp = list.head
+        mainList.reverse()
+        innerList.reverse()
+
+        let curr = mainList.head
+        let temp = innerList.head
+        let tempCurr = mainList.head
+        let entry = false
+        let counter = 0, tempCounter = 0
         
-        for (let i = 0; i < this.length; i++) {
-            if (curr!.data === temp!.data) {
+        while(curr) {
+            if (curr?.data === temp?.data) {
+                if (temp === list.head) {
+                    entry = true
+                    tempCurr = curr
+                }
+
                 temp = temp?.next
+                if (temp) tempCounter++
+
             } else {
-                temp = list.head
-            }
+                if (entry) {
+                    entry = false
+                    curr = tempCurr
+                    counter -= tempCounter
+                }
 
+                tempCounter = 0
+                temp = innerList.head
+
+            }
+            
             if(!temp) {
-                return this.length - i - 1
+                return (mainList.length - 1) - counter
             }
-
+            
             curr = curr?.next
+            counter++
         }
 
-        return -1
+        return -100
     }
 
     // 19) swapping 2 elements in the list by indexes
