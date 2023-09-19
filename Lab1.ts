@@ -1,12 +1,12 @@
-type numNode = {
+export type numNode = {
     data: number
     next?: numNode
 }
 
-class LinkedList {
+export class LinkedList {
     private length: number
-    private head?: numNode
-    private tail?: numNode
+    public head?: numNode
+    public tail?: numNode
 
     constructor() {
         this.length = 0
@@ -49,7 +49,7 @@ class LinkedList {
     // 3) removing the last element in list
     public removeLast(): number | undefined {
         if (!this.tail) {
-            throw new Error("list is empty.")
+            return
         }
 
         return this.removeNode(this.tail)
@@ -58,7 +58,8 @@ class LinkedList {
     // 4) removing the first element in list
     public removeFirst(): number | undefined {
         if (!this.head) {
-            throw new Error("list is empty.")
+            console.log("list is empty.")
+            return
         }
 
         return this.removeNode(this.head)
@@ -147,7 +148,8 @@ class LinkedList {
     // 5) inserting an element by index
     public insertAt(value: number | undefined, index: number): void {
         if (index > this.length || index < 0) {
-            throw new Error("index is out of bound")
+            console.log("index is out of bound")
+            return
         } else if (index === 0) {
             this.prepend(value)
             return
@@ -201,7 +203,8 @@ class LinkedList {
         }
 
         if (index > this.length || index < 0) {
-            throw new Error("index is out of bound")
+            console.log("index is out of bound")
+            return
         } else if (index === 0) {
             this.prependList(list)
             return
@@ -262,7 +265,6 @@ class LinkedList {
     public searchFirstEntry(list: LinkedList): number {
         let curr = this.head
         let temp = list.head
-        let index: number
 
         for (let i = 0; i < this.length; i++) {
             if (curr!.data === temp!.data) {
@@ -361,19 +363,9 @@ class LinkedList {
         return this.length
     }
 
-    // helper method for getting head of the list
-    public getHead(): number | undefined {
-        return this.head?.data
-    }
-
-    // helper method for getting tail of the list
-    public getTail(): number | undefined {
-        return this.tail?.data
-    }
-
     // helper method for getting the node via index
     private getAt(index: number): numNode | undefined {
-        if (index < 0) {
+        if (index < 0 || index > this.length - 1) {
             return undefined
         }
 
@@ -384,13 +376,16 @@ class LinkedList {
         return curr
     }
 
+    public peek(index: number): numNode | undefined {
+        return this.getAt(index)
+    }
+
+    //helper method for printing the list
     public printList(): void {
         let curr = this.head
         for (let i = 0; i < this.length; i++) {
             console.log(curr?.data)
             curr = curr?.next
         }
-
-        console.log("length: " + this.length)
     }
 }
