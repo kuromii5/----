@@ -1,5 +1,3 @@
-import { randomInt } from "crypto"
-
 export type numNode = {
     data: number
     next?: numNode
