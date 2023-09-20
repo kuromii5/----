@@ -1,3 +1,5 @@
+import { randomInt } from "crypto"
+
 export type numNode = {
     data: number
     next?: numNode
@@ -86,7 +88,7 @@ export class LinkedList {
     }
 
     // helper method for removing (we don't wanna duplicate these lines of code)
-    private removeNode(node: numNode, index = -1): number | undefined {
+    private removeNode(node: numNode | undefined, index = -1): number | undefined {
         this.length--
         if (this.length === 0) {
             const value = this.head?.data
@@ -95,16 +97,18 @@ export class LinkedList {
         }
         
         if (this.head === node) {
-            this.head = node.next
+            this.head = node?.next
+            node = undefined
         } else if (this.tail === node) {
-            let prev = this.getAt(index - 1) as numNode
+            let prev = this.getAt(this.length - 2) as numNode
+            prev.next = undefined
             this.tail = prev
         } else {
             let prev = this.getAt(index - 1) as numNode
-            prev.next = node.next
+            prev.next = node?.next
         }
 
-        return node.data
+        return node?.data
     }
 
     // 10) replacing an element with other in the list
@@ -229,6 +233,10 @@ export class LinkedList {
             return this.contains(list.head?.data)
         }
 
+        if (list.length > this.length) {
+            return false
+        }
+
         let curr = this.head
         let temp = list.head
         let tempCurr = this.head
@@ -277,6 +285,10 @@ export class LinkedList {
 
     // 17) searching first entry of one list in another
     public searchFirstEntry(list: LinkedList): number {
+        if (list.length > this.length) {
+            return -1
+        }
+
         let curr = this.head
         let temp = list.head
         let tempCurr = this.head
@@ -318,6 +330,10 @@ export class LinkedList {
 
     // 18) searching last entry of one list in another
     public searchLastEntry(list: LinkedList): number {
+        if (list.length > this.length) {
+            return -1
+        }
+
         let mainList = this.copy()
         let innerList = list.copy()
 
@@ -440,6 +456,15 @@ export class LinkedList {
         let curr = this.head
         for (let i = 0; i < this.length; i++) {
             console.log(curr?.data)
+            curr = curr?.next
+        }
+    }
+
+    // helper method for debugging (I used it to fix removeLast method)
+    public printReal(): void {
+        let curr = this.head
+        while (curr) {
+            console.log(curr.data)
             curr = curr?.next
         }
     }
