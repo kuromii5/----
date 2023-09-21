@@ -239,8 +239,13 @@ export class LinkedList {
         let temp = list.head
         let tempCurr = this.head
         let entry = false
+        let remaining = this.length
 
         while(curr) {
+            if (list.length > remaining) {
+                return false
+            }
+
             if (curr?.data === temp?.data) {
                 if (temp === list.head) {
                     entry = true
@@ -262,8 +267,9 @@ export class LinkedList {
             if(!temp) {
                 return true
             }
-            
+
             curr = curr?.next
+            if (!entry) remaining--
         }
 
         return false
@@ -292,8 +298,13 @@ export class LinkedList {
         let tempCurr = this.head
         let entry = false
         let counter = 0, tempCounter = 0
+        let remaining = this.length
 
         while(curr) {
+            if (list.length > remaining) {
+                return -1
+            }
+
             if (curr?.data === temp?.data) {
                 if (temp === list.head) {
                     entry = true
@@ -321,6 +332,7 @@ export class LinkedList {
             
             curr = curr?.next
             counter++
+            if (!entry) remaining--
         }
 
         return -1
@@ -343,8 +355,13 @@ export class LinkedList {
         let tempCurr = mainList.head
         let entry = false
         let counter = 0, tempCounter = 0
+        let remaining = this.length
         
         while(curr) {
+            if (list.length > remaining) {
+                return -1
+            }
+
             if (curr?.data === temp?.data) {
                 if (temp === list.head) {
                     entry = true
@@ -372,9 +389,10 @@ export class LinkedList {
             
             curr = curr?.next
             counter++
+            if (!entry) remaining--
         }
 
-        return -100
+        return -1
     }
 
     // 19) swapping 2 elements in the list by indexes
